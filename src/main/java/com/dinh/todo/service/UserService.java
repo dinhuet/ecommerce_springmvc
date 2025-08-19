@@ -28,13 +28,7 @@ public class UserService {
     }
 
     public User findByUsername(String username) {
-        List<User> users = userRepository.findAll();
-        for (User user : users) {
-            if (user.getUsername().equals(username)) {
-                return user;
-            }
-        }
-        return null;
+        return userRepository.findByUsername(username);
     }
 
     public User existsUser(User user) {
