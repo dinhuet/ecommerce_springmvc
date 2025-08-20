@@ -1,6 +1,8 @@
 package com.dinh.todo.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +13,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotBlank
+    @Size(min = 6, message = "username phai lon hon 6")
     private String username;
+
+    @NotBlank
+    @Size(min = 6, message = "password phai lon hon 6")
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

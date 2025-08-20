@@ -3,9 +3,11 @@ package com.dinh.todo.controller;
 import com.dinh.todo.models.User;
 import com.dinh.todo.service.UserService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +23,8 @@ public class UserController {
     }
 
     @GetMapping("/register")
-    public String register() {
+    public String register(Model model) {
+        model.addAttribute("user", new User());
         return "register";
     }
 
@@ -42,9 +45,20 @@ public class UserController {
 //    }
 
     @PostMapping("/register")
-    public ModelAndView newUserRegister(@ModelAttribute User user, RedirectAttributes redirectAttributes) {
-        User exist =  userService.findByUsername(user.getUsername());
+    public ModelAndView newUserRegister(@ModelAttribute @Valid User user
+            , BindingResult bindingResult
+            , RedirectAttributes redirectAttributes
+    ) {
+
         ModelAndView mv = new ModelAndView();
+
+        if (bindingResult.hasErrors()) {
+            mv.addObject("user", user);
+            mv.setViewName("register");
+            return mv;
+        }
+
+        User exist =  userService.findByUsername(user.getUsername());
         if (exist != null) {
             redirectAttributes.addFlashAttribute("message", "Username is already exist");
         } else {
@@ -52,6 +66,7 @@ public class UserController {
             redirectAttributes.addFlashAttribute("message", "User has been registered successfully");
         }
         mv.setViewName("redirect:/login");
+
         return mv;
     }
 

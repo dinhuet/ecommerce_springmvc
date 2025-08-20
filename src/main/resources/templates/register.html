@@ -6,17 +6,22 @@
 </head>
 <body>
 
-<form action="/register" method="post">
-    Username: <input
-        type="text"
-        name="username"><br />
-    Password: <input
-        type="password"
-        name="password"><br />
+<form action="/register" method="post" th:object="${user}">
+    <div>
+        Username: <input
+            type="text"
+            name="username"><br />
+        <p th:if="${#fields.hasErrors('username')}"  th:errors="*{username}"></p>
+    </div>
+
+    <div>
+        Password: <input
+            type="password"
+            name="password"><br />
+        <p th:if="${#fields.hasErrors('password')}"  th:errors="*{password}"></p>
+    </div>
+
     <button type="submit">Register</button>
 </form>
-
-<p th:text="${message}"></p>
-
 </body>
 </html>
