@@ -13,8 +13,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank
+
     @Size(min = 6, message = "username phai lon hon 6")
+    @NotBlank
     private String username;
 
     @NotBlank

@@ -5,12 +5,11 @@ import com.dinh.todo.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -70,17 +69,26 @@ public class UserController {
         return mv;
     }
 
-    @PostMapping("/login")
-    public ModelAndView loginUser(@ModelAttribute User user, Model model ,HttpSession session) {
-        ModelAndView mv = new ModelAndView();
-        User user1 = userService.existsUser(user);
-        if (user1 != null) {
-            session.setAttribute("user", user1);
-            mv.setViewName("redirect:/");
+//    @PostMapping("/login")
+//    public ModelAndView loginUser(@ModelAttribute User user, Model model ,HttpSession session) {
+//        ModelAndView mv = new ModelAndView();
+//        User user1 = userService.existsUser(user);
+//        if (user1 != null) {
+//            session.setAttribute("user", user1);
+//            mv.setViewName("redirect:/");
+//        } else {
+//            model.addAttribute("message", "Username is not already exist");
+//            mv.setViewName("login");
+//        }
+//        return mv;
+//    }
+    @PostMapping("login")
+    public ResponseEntity<String> login(@RequestBody @Valid User user) {
+        User exist = userService.existsUser(user);
+        if (exist != null) {
+            return ResponseEntity.ok("User has been logged in successfully");
         } else {
-            model.addAttribute("message", "Username is not already exist");
-            mv.setViewName("login");
+            return ResponseEntity.badRequest().body("Invalid username or password");
         }
-        return mv;
     }
 }
