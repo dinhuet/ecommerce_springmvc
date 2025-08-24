@@ -3,6 +3,7 @@ package com.dinh.todo.controller.admin;
 import com.dinh.todo.models.Role;
 import com.dinh.todo.models.User;
 import com.dinh.todo.service.RoleService;
+import com.dinh.todo.service.UploadService;
 import com.dinh.todo.service.UserService;
 import jakarta.servlet.ServletContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +24,14 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
     private final RoleService roleService;
-    private final ServletContext servletContext;
+    private final UploadService uploadService;
+
     @Autowired
-    public UserController(UserService userService, RoleService roleService, ServletContext servletContext) {
+    public UserController(UserService userService, RoleService roleService, UploadService uploadService) {
         this.userService = userService;
         this.roleService = roleService;
-        this.servletContext = servletContext;
+
+        this.uploadService = uploadService;
     }
 
     @GetMapping("/admin/user")
@@ -41,25 +44,8 @@ public class UserController {
     @PostMapping("/admin/user/createUser")
     public String createUser1(@ModelAttribute User newUser
     , @RequestParam("hoidanItFile") MultipartFile file) {
-        try {
-            byte[] bytes = file.getBytes();
-            String uploadDir = "uploads/avatar/";
 
-            File dir = new File(uploadDir);
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
-
-// Create the file on server
-            File serverFile = new File(dir.getAbsolutePath() + File.separator +
-                    System.currentTimeMillis() + "-" + file.getOriginalFilename());
-            BufferedOutputStream stream = new BufferedOutputStream(
-                    new FileOutputStream(serverFile));
-            stream.write(bytes);
-            stream.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        String avatar = uploadService.handleSaveUploadFile(file, "avatar");
 
        // userService.save(newUser);
         return "redirect:/admin/user";

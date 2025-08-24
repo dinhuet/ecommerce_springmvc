@@ -8,6 +8,6 @@ public class WebConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // map URL /images/** đến thư mục uploads/avatar/
         registry.addResourceHandler("/images/**")
-                .addResourceLocations("file:uploads/avatar/");
+                .addResourceLocations("file:uploads/");
     }
 }
