@@ -5,18 +5,15 @@ import com.dinh.todo.models.User;
 import com.dinh.todo.service.RoleService;
 import com.dinh.todo.service.UploadService;
 import com.dinh.todo.service.UserService;
-import jakarta.servlet.ServletContext;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -25,12 +22,14 @@ public class UserController {
     private final UserService userService;
     private final RoleService roleService;
     private final UploadService uploadService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserController(UserService userService, RoleService roleService, UploadService uploadService) {
+    public UserController(UserService userService, RoleService roleService, UploadService uploadService
+    , PasswordEncoder  passwordEncoder) {
         this.userService = userService;
         this.roleService = roleService;
-
+        this.passwordEncoder = passwordEncoder;
         this.uploadService = uploadService;
     }
 
@@ -46,8 +45,11 @@ public class UserController {
     , @RequestParam("hoidanItFile") MultipartFile file) {
 
         String avatar = uploadService.handleSaveUploadFile(file, "avatar");
+        String hashPassword = passwordEncoder.encode(newUser.getPassword());
 
-       // userService.save(newUser);
+        newUser.setAvatar(avatar);
+        newUser.setPassword(hashPassword);
+        userService.save(newUser);
         return "redirect:/admin/user";
     }
 
