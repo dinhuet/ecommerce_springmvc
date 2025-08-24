@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
 @Service
 public class UserService {
 
@@ -17,24 +18,11 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void saveUser(User user) {
-        if (findByUsername(user.getUsername()) != null) {
-            throw new RuntimeException("Username is already exist");
-        }
-        userRepository.save(user);
-    }
-
-    public List<User> findAll() {
+    public List<User> getUsers() {
         return userRepository.findAll();
     }
 
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Username not found"));
-    }
-
-    public User existsUser(User user) {
-       return userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword())
-               .orElseThrow(() -> new RuntimeException("User not found"));
+    public void save(User user) {
+        userRepository.save(user);
     }
 }

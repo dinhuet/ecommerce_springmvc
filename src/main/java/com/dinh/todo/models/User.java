@@ -1,52 +1,67 @@
 package com.dinh.todo.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.Generated;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "users")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
+    private String email;
 
-    @Size(min = 6, message = "username phai lon hon 6")
-    @NotBlank
-    private String username;
-
-    @NotBlank
-    @Size(min = 6, message = "password phai lon hon 6")
     private String password;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Todos> todos = new ArrayList<>();
+    private String address;
 
-    public List<Todos> getTodos() {
-        return todos;
+    private String phone;
+
+    private String avatar;
+
+    // roleid
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
+
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders;
+
+
+    public List<Order> getOrders() {
+        return orders;
     }
 
-    public void setTodos(List<Todos> todos) {
-        this.todos = todos;
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
-    public User() {
+    public Role getRole() {
+        return role;
     }
 
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
-    public String getUsername() {
-        return username;
+    public Long getId() {
+        return id;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -57,11 +72,40 @@ public class User {
         this.password = password;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
+                ", avatar='" + avatar + '\'' +
+                '}';
     }
 
-    public int getId() {
-        return id;
+    public String getAddress() {
+        return address;
     }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
 }

@@ -1,12 +1,9 @@
 package com.dinh.todo.repository;
 
-import com.dinh.todo.models.User;
+import com.dinh.todo.models.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-
+public interface RoleRepository extends JpaRepository<Role,Integer> {
 }
