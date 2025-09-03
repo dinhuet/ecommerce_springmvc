@@ -23,21 +23,47 @@
     <div th:replace="admin/layout/sidebar :: sidebar"></div>
 
 
-    <div id="layoutSidenav_content">
-        <main>
-            <div class="container-fluid px-4">
-                <h1 class="mt-4">Dashboard</h1>
-                <ol class="breadcrumb mb-4">
-                    <li class="breadcrumb-item active">Dashboard</li>
-                </ol>
-               <div>product</div>
+        <div id="layoutSidenav_content">
+            <div>
+                <div class="container-fluid px-4">
+                    <h1 class="mt-4">Product</h1>
+                    <a href="/admin">Dashboard</a>
+                    <div>
+                        <a class="btn btn-primary" href="/admin/product/createProduct" role="button">CreateProduct</a>
+                    </div>
+                </div>
+
             </div>
-        </main>
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Factory</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="product : ${products}">
+                    <th scope="row" th:text="${product.id}"></th>
+                    <td th:text="${product.name}"></td>
+                    <td th:text="${product.price}"></td>
+                    <td th:text="${product.factory}"></td>
+                    <td>
+                        <button>View</button>
+                        <button>Update</button>
+                        <button>Delete</button>
+
+                    </td>
+                </tr>
+                </tbody>
+            </table>
 
         <!--        footer-->
         <div th:replace="admin/layout/footer :: footer"></div>
 
-    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
