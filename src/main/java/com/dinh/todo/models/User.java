@@ -1,6 +1,7 @@
 package com.dinh.todo.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.Generated;
 
 import java.util.List;
@@ -13,9 +14,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     private String email;
 
+    @NotNull
     private String password;
+
+    private String fullname;
 
     private String address;
 
@@ -31,6 +36,13 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
 
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
 
     public List<Order> getOrders() {
         return orders;
