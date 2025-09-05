@@ -24,6 +24,7 @@ public class Product {
     private String image;
 
     @NotEmpty(message = "detailDesc không dc để trống")
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String detailDesc;
 
     @NotEmpty(message = "shortDesc không dc để trống")
