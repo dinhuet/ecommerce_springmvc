@@ -1,8 +1,7 @@
 package com.dinh.todo.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import org.hibernate.annotations.Generated;
+import jakarta.validation.constraints.*;
 
 import java.util.List;
 
@@ -14,13 +13,18 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+
+    @Email(message = "Email không hợp lệ")
+    @NotBlank
     private String email;
 
-    @NotNull
+    @NotBlank
+    @Size(min = 6, message = "Password phải có tối thiểu 6 ký tự")
     private String password;
 
-    private String fullname;
+    @NotBlank
+    @Size(min = 3, max = 15, message = "FullName phải có tối thiểu 3 ký tự")
+    private String fullName;
 
     private String address;
 
@@ -36,12 +40,12 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
 
-    public String getFullname() {
-        return fullname;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public List<Order> getOrders() {

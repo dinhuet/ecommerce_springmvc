@@ -43,19 +43,24 @@
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label for="email" class="form-label">Email:</label>
-                        <input type="email" class="form-control" id="email" th:field="*{email}">
+                        <input type="email" id="email" th:field="*{email}"
+                               th:class="${#fields.hasErrors('email')} ? 'form-control is-invalid' : 'form-control'">
+                        <p th:if="${#fields.hasErrors('email')}"  th:errors="*{email}" class="invalid-feedback"></p>
                     </div>
                     <div class="col-md-6">
                         <label for="password" class="form-label">Password:</label>
-                        <input type="password" class="form-control" id="password" th:field="*{password}">
+                        <input type="password" id="password" th:field="*{password}"
+                               th:class="${#fields.hasErrors('password')} ? 'form-control is-invalid' : 'form-control'">
+                        <p th:if="${#fields.hasErrors('password')}"  th:errors="*{password}" class="invalid-feedback"></p>
+
                     </div>
                 </div>
 
                 <div class="row mb-3">
-
-                        <label for="fullname" class="form-label">Full name:</label>
-                        <input type="text" class="form-control" id="fullname" th:field="*{fullname}">
-
+                        <label for="fullName" class="form-label">Full name:</label>
+                        <input type="text"  id="fullName" th:field="*{fullName}"
+                        th:class="${#fields.hasErrors('fullName')} ? 'form-control is-invalid' : 'form-control'">
+                        <p th:if="${#fields.hasErrors('fullName')}"  th:errors="*{fullName}" class="invalid-feedback"></p>
                 </div>
 
                 <div class="row mb-3">
