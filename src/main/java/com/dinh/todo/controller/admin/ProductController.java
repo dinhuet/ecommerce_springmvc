@@ -7,13 +7,11 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ProductController {
@@ -40,6 +38,20 @@ public class ProductController {
         return "admin/product/createProduct";
     }
 
+    @GetMapping("admin/product/{id}")
+    public String productDetailPage(Model model, @PathVariable long id) {
+        Product product = productService.findById(id);
+        model.addAttribute("product", product);
+        return "admin/product/productDetail";
+    }
+
+    @GetMapping("admin/product/update/{id}")
+    public String updateProductPage(Model model, @PathVariable long id) {
+        Product product = productService.findById(id);
+        model.addAttribute("product", product);
+        return "admin/product/updateProduct";
+    }
+
     @PostMapping("admin/product/createProduct")
     public String createProduct( @Valid @ModelAttribute("newProduct")Product newProduct, BindingResult bindingResult
     , @RequestParam("productImage") MultipartFile file, Model model) {
@@ -54,5 +66,31 @@ public class ProductController {
         productService.save(newProduct);
 
         return  "redirect:/admin/product";
+    }
+
+    @PostMapping("admin/product/update")
+    public String updateProduct(@Valid @ModelAttribute("product")Product product, BindingResult bindingResult,
+                                @RequestParam("productImage") MultipartFile file, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "admin/product/updateProduct";
+        }
+
+        if (!file.isEmpty()) {
+            String img =  uploadService.handleSaveUploadFile(file, "product");
+            product.setImage(img);
+        } else {
+            Product oldProduct = productService.findById(product.getId());
+            product.setImage(oldProduct.getImage());
+        }
+
+        productService.save(product);
+        return "redirect:/admin/product";
+    }
+
+
+    @PostMapping("admin/product/delete/{id}")
+    public String deleteProduct(@PathVariable long id) {
+        productService.deleteById(id);
+        return "redirect:/admin/product";
     }
 }
