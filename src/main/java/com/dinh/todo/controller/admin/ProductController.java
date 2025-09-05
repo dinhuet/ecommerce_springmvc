@@ -3,8 +3,10 @@ package com.dinh.todo.controller.admin;
 import com.dinh.todo.models.Product;
 import com.dinh.todo.service.ProductService;
 import com.dinh.todo.service.UploadService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,10 +41,16 @@ public class ProductController {
     }
 
     @PostMapping("admin/product/createProduct")
-    public String createProduct(@ModelAttribute Product newProduct
-    , @RequestParam("productImage") MultipartFile file) {
+    public String createProduct( @Valid @ModelAttribute("newProduct")Product newProduct, BindingResult bindingResult
+    , @RequestParam("productImage") MultipartFile file, Model model) {
+
+        if (bindingResult.hasErrors()) {
+           // model.addAttribute("newProduct", newProduct);
+            return "admin/product/createProduct";
+        }
         String image = uploadService.handleSaveUploadFile(file, "product");
         newProduct.setImage(image);
+        newProduct.setSold(0L);
         productService.save(newProduct);
 
         return  "redirect:/admin/product";

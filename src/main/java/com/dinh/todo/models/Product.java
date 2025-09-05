@@ -1,6 +1,10 @@
 package com.dinh.todo.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.util.List;
 
@@ -11,11 +15,21 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty(message = "Tên không dc để trống")
     private String name;
+
+    @Positive(message = "Price phải lớn hơn 0")
     private double price;
+
     private String image;
+
+    @NotEmpty(message = "detailDesc không dc để trống")
     private String detailDesc;
+
+    @NotEmpty(message = "shortDesc không dc để trống")
     private String shortDesc;
+
+    @Min(value = 1, message = "Số lượng phải lớn hơn 1 hoặc bằng 1")
     private Long quantity;
     private Long sold;
     private String factory;

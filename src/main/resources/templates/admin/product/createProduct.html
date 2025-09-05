@@ -43,27 +43,41 @@
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label for="name" class="form-label">Name:</label>
-                        <input type="text" class="form-control" id="name" th:field="*{name}">
+                        <input type="text" id="name" th:field="*{name}"
+                               th:class="${#fields.hasErrors('name')} ? 'form-control is-invalid' : 'form-control'">
+                        <p th:if="${#fields.hasErrors('name')}"  th:errors="*{name}" class="invalid-feedback"></p>
                     </div>
                     <div class="col-md-6">
                         <label for="price" class="form-label">Price:</label>
-                        <input type="text" class="form-control" id="price" th:field="*{price}">
+                        <input type="text" id="price" th:field="*{price}"
+                               th:class="${#fields.hasErrors('price')} ? 'form-control is-invalid' : 'form-control'">
+                        <p th:if="${#fields.hasErrors('price')}"  th:errors="*{price}" class="invalid-feedback"></p>
+
                     </div>
                 </div>
 
                 <div class="row mb-3">
                     <label for="detail" class="form-label">Detail Description:</label>
-                    <textarea type="text" class="form-control" id="detail" th:field="*{detailDesc}"></textarea>
+                    <textarea type="text"  id="detail" th:field="*{detailDesc}"
+                              th:class="${#fields.hasErrors('detailDesc')} ? 'form-control is-invalid' : 'form-control'"></textarea>
+                    <p th:if="${#fields.hasErrors('detailDesc')}"  th:errors="*{detailDesc}" class="invalid-feedback"></p>
+
                 </div>
 
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label for="short" class="form-label">Short Description:</label>
-                        <input type="text" class="form-control" id="short" th:field="*{shortDesc}">
+                        <input type="text" class="form-control" id="short" th:field="*{shortDesc}"
+                               th:class="${#fields.hasErrors('shortDesc')} ? 'form-control is-invalid' : 'form-control'">
+                        <p th:if="${#fields.hasErrors('shortDesc')}"  th:errors="*{shortDesc}" class="invalid-feedback"></p>
+
                     </div>
                     <div class="col-md-6">
                         <label for="quantity" class="form-label">Quantity:</label>
-                        <input type="number" class="form-control" id="quantity" th:field="*{quantity}" min="0">
+                        <input type="number" class="form-control" id="quantity" th:field="*{quantity}" min="0"
+                               th:class="${#fields.hasErrors('quantity')} ? 'form-control is-invalid' : 'form-control'">
+                        <p th:if="${#fields.hasErrors('quantity')}"  th:errors="*{quantity}" class="invalid-feedback"></p>
+
                     </div>
                 </div>
 
