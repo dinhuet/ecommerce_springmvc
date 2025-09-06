@@ -1,6 +1,8 @@
 package com.dinh.todo.service;
 
+import com.dinh.todo.models.Role;
 import com.dinh.todo.models.User;
+import com.dinh.todo.models.dto.RegisterDTO;
 import com.dinh.todo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,5 +26,15 @@ public class UserService {
 
     public void save(User user) {
         userRepository.save(user);
+    }
+
+    public User registerDTOtoUser(RegisterDTO registerDTO) {
+        User user = new User();
+
+        user.setFullName(registerDTO.getFirstname() + " " +  registerDTO.getLastname());
+        user.setEmail(registerDTO.getEmail());
+        user.setPassword(registerDTO.getPassword());
+
+        return user;
     }
 }

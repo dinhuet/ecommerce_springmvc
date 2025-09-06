@@ -2,6 +2,7 @@ package com.dinh.todo.service;
 
 import com.dinh.todo.models.Role;
 import com.dinh.todo.repository.RoleRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,5 +16,9 @@ public class RoleService {
 
     public List<Role> findAll() {
         return roleRepository.findAll();
+    }
+
+    public Role findRoleByName(String name) {
+            return roleRepository.findByName(name).orElseThrow(() -> new EntityNotFoundException("Role not found"));
     }
 }

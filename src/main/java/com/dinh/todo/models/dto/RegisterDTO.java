@@ -1,6 +1,6 @@
 package com.dinh.todo.models.dto;
 
-public class RegisterDto {
+public class RegisterDTO {
     private String firstname;
     private String lastname;
     private String email;
