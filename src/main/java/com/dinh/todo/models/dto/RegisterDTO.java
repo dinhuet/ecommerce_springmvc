@@ -1,5 +1,8 @@
 package com.dinh.todo.models.dto;
 
+import com.dinh.todo.service.validator.RegisterChecked;
+
+@RegisterChecked
 public class RegisterDTO {
     private String firstname;
     private String lastname;

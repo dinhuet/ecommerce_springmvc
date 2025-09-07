@@ -7,9 +7,12 @@ import com.dinh.todo.repository.RoleRepository;
 import com.dinh.todo.service.ProductService;
 import com.dinh.todo.service.RoleService;
 import com.dinh.todo.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,7 +57,18 @@ public class HomePageController {
     }
 
     @PostMapping("/register")
-    public String handleRegister(@ModelAttribute("registerUser") RegisterDTO registerUser) {
+    public String handleRegister(@Valid @ModelAttribute("registerUser") RegisterDTO registerUser,
+                                 BindingResult bindingResult) {
+
+        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+        for (FieldError fieldError : fieldErrors) {
+            System.out.println(">>>>>>" + fieldError.getField() + " " + fieldError.getDefaultMessage());
+        }
+
+        if  (bindingResult.hasErrors()) {
+            return "client/auth/register";
+        }
+
         User user = userService.registerDTOtoUser(registerUser);
 
         String hashPassword = passwordEncoder.encode(user.getPassword());

@@ -34,21 +34,9 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        // Cho phép vào /login, /register mà không cần login
                         .requestMatchers("/login", "/register", "/css/**", "/js/**").permitAll()
-                        // Những trang khác yêu cầu phải login
                         .anyRequest().authenticated()
-                )
-                .formLogin(form -> form
-                        .loginPage("/login")             // trang login custom
-                        .defaultSuccessUrl("/", true)    // sau khi login thành công về "/"
-                        .permitAll()
                 );
-//                .logout(logout -> logout
-//                        .logoutUrl("/logout")
-//                        .logoutSuccessUrl("/login?logout")
-//                        .permitAll()
-//                );
 
         return http.build();
     }
