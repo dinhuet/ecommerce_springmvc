@@ -2,6 +2,7 @@ package com.dinh.todo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -36,7 +37,9 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/register", "/css/**", "/js/**").permitAll()
                         .anyRequest().authenticated()
-                );
+                )
+                .formLogin(Customizer.withDefaults()) // dùng login mặc định
+                .logout(Customizer.withDefaults());   // dùng logout mặc định
 
         return http.build();
     }

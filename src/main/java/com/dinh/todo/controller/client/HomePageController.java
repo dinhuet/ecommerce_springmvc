@@ -60,11 +60,6 @@ public class HomePageController {
     public String handleRegister(@Valid @ModelAttribute("registerUser") RegisterDTO registerUser,
                                  BindingResult bindingResult) {
 
-        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-        for (FieldError fieldError : fieldErrors) {
-            System.out.println(">>>>>>" + fieldError.getField() + " " + fieldError.getDefaultMessage());
-        }
-
         if  (bindingResult.hasErrors()) {
             return "client/auth/register";
         }
