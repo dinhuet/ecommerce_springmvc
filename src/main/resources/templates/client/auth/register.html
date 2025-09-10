@@ -27,8 +27,13 @@
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
-                                                <input th:field="*{firstname}" class="form-control" id="inputFirstName" type="text" placeholder="Enter your first name" />
+<!--                                                <input th:field="*{firstname}" class="form-control" id="inputFirstName" type="text" placeholder="Enter your first name" />-->
+<!--                                                <label for="inputFirstName">First name</label>-->
+
+                                                <input type="text" id="inputFirstName" th:field="*{firstname}" placeholder="Enter your last name"
+                                                       th:class="${#fields.hasErrors('firstname')} ? 'form-control is-invalid' : 'form-control'">
                                                 <label for="inputFirstName">First name</label>
+                                                <p th:if="${#fields.hasErrors('firstname')}"  th:errors="*{firstname}" class="invalid-feedback"></p>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -47,8 +52,10 @@
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
-                                                <input th:field="*{password}" class="form-control" id="inputPassword" type="password" placeholder="Create a password" />
+                                                <input type="password" id="inputPassword" th:field="*{password}" placeholder="Create a password"
+                                                       th:class="${#fields.hasErrors('password')} ? 'form-control is-invalid' : 'form-control'">
                                                 <label for="inputPassword">Password</label>
+                                                <p th:if="${#fields.hasErrors('password')}"  th:errors="*{password}" class="invalid-feedback"></p>
                                             </div>
                                         </div>
                                         <div class="col-md-6">

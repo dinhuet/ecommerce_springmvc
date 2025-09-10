@@ -30,6 +30,7 @@ public class RegisterValidator implements ConstraintValidator<RegisterChecked, R
                     .addPropertyNode("email")
                     .addConstraintViolation()
                     .disableDefaultConstraintViolation();
+            valid = false;
         }
 
         return valid;

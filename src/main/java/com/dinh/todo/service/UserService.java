@@ -1,6 +1,5 @@
 package com.dinh.todo.service;
 
-import com.dinh.todo.models.Role;
 import com.dinh.todo.models.User;
 import com.dinh.todo.models.dto.RegisterDTO;
 import com.dinh.todo.repository.UserRepository;
@@ -40,5 +39,9 @@ public class UserService {
 
     public boolean checkEmailExist(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 }
