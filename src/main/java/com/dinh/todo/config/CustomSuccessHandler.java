@@ -1,23 +1,37 @@
 package com.dinh.todo.config;
 
+import com.dinh.todo.service.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class CustomSuccessHandler implements AuthenticationSuccessHandler {
+
+
+    private UserService userService;
+
+    public CustomSuccessHandler(UserService userService) {
+        this.userService = userService;
+    }
+
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+
+
     protected String determineTargetUrl(final Authentication authentication) {
 
         Map<String, String> roleTargetUrlMap = new HashMap<>();
@@ -41,6 +55,7 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
             return;
         }
         session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
+        session.setAttribute("fullName", "Hoi dan IT");
     }
 
     @Override
@@ -51,6 +66,13 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
         if (response.isCommitted()) {
             return;
         }
+
+        String email = authentication.getName();
+        com.dinh.todo.models.User user =  userService.getUserByEmail(email);
+
+        HttpSession session = request.getSession(false);
+        session.setAttribute("fullName", user.getFullName());
+        session.setAttribute("avatar", user.getAvatar());
 
         redirectStrategy.sendRedirect(request, response, targetUrl);
         clearAuthenticationAttributes(request);

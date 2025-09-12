@@ -3,7 +3,9 @@ package com.dinh.todo.config;
 import com.dinh.todo.service.CustomUserDetailsService;
 import com.dinh.todo.service.UserService;
 import jakarta.servlet.DispatcherType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -11,6 +13,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,10 +24,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.session.security.web.authentication.SpringSessionRememberMeServices;
 
 @Configuration
 @EnableMethodSecurity(securedEnabled = true)
+@ComponentScan(basePackages = "com.dinh.todo")
 public class SecurityConfiguration {
+
+    @Autowired
+    private UserService userService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -47,10 +55,12 @@ public class SecurityConfiguration {
         return authProvider;
     }
 
+
     @Bean
     public AuthenticationSuccessHandler customSuccessHandler() {
-        return new CustomSuccessHandler();
+        return new CustomSuccessHandler(userService);
     }
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -69,6 +79,15 @@ public class SecurityConfiguration {
 
                         .anyRequest().authenticated()
                 )
+                .sessionManagement((sessionManagement) -> sessionManagement
+                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                        .invalidSessionUrl("/logout?expired")
+                        .maximumSessions(1)
+                        .maxSessionsPreventsLogin(false))
+                .logout(logout->logout.deleteCookies("JSESSIONID").invalidateHttpSession(true))
+                .rememberMe((rememberMe) -> rememberMe
+                        .rememberMeServices(rememberMeServices())
+                )
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
                         .failureUrl("/login?error")
@@ -78,5 +97,14 @@ public class SecurityConfiguration {
                 .exceptionHandling(ex -> ex.accessDeniedPage("/access_denied"));
 
         return http.build();
+    }
+
+    @Bean
+    public SpringSessionRememberMeServices rememberMeServices() {
+        SpringSessionRememberMeServices rememberMeServices =
+                new SpringSessionRememberMeServices();
+// optionally customize
+        rememberMeServices.setAlwaysRemember(true);
+        return rememberMeServices;
     }
 }

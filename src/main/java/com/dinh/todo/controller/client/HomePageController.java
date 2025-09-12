@@ -7,6 +7,8 @@ import com.dinh.todo.repository.RoleRepository;
 import com.dinh.todo.service.ProductService;
 import com.dinh.todo.service.RoleService;
 import com.dinh.todo.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -38,8 +40,12 @@ public class HomePageController {
     }
 
     @GetMapping("/")
-    public String getHomePage(Model model) {
+    public String getHomePage(Model model, HttpServletRequest request) {
         List<Product> products = productService.findAll();
+        HttpSession session = request.getSession(false);
+
+
+
         model.addAttribute("products", products);
         return "client/homepage/show";
     }
