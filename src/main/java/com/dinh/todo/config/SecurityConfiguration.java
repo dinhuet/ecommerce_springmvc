@@ -69,12 +69,13 @@ public class SecurityConfiguration {
 
                         .anyRequest().authenticated()
                 )
-                .    formLogin(formLogin -> formLogin
-                .loginPage("/login")
-                .failureUrl("/login?error")
-                        .successHandler(customSuccessHandler())
-                        //.defaultSuccessUrl("/admin", true) // true = always go here
-                .permitAll());
+                .formLogin(formLogin -> formLogin
+                        .loginPage("/login")
+                        .failureUrl("/login?error")
+                                .successHandler(customSuccessHandler())
+                                //.defaultSuccessUrl("/admin", true) // true = always go here
+                        .permitAll())
+                .exceptionHandling(ex -> ex.accessDeniedPage("/access_denied"));
 
         return http.build();
     }

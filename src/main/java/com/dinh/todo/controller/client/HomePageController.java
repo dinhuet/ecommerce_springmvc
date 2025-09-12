@@ -73,4 +73,9 @@ public class HomePageController {
 
         return "redirect:/login";
     }
+
+    @GetMapping("/access_denied")
+    public String getAccessDeniedPage(Model model) {
+        return  "client/auth/deny";
+    }
 }

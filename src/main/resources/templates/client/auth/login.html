@@ -24,6 +24,9 @@
                                     <div th:if="${param.error}">
                                         <p style="color:red;">Invalid email or password</p>
                                     </div>
+                                    <div th:if="${param.logout}">
+                                        <p style="color:green;">Logout successful</p>
+                                    </div>
                                     <div class="form-floating mb-3">
 
                                         <input class="form-control" id="inputEmail" type="email" placeholder="name@example.com"
