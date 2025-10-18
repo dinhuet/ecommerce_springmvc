@@ -73,6 +73,8 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
         HttpSession session = request.getSession(false);
         session.setAttribute("fullName", user.getFullName());
         session.setAttribute("avatar", user.getAvatar());
+        session.setAttribute("cart_sum", user.getCart() != null ? user.getCart().getSum() : 0);
+
 
         redirectStrategy.sendRedirect(request, response, targetUrl);
         clearAuthenticationAttributes(request);

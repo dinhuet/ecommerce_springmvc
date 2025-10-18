@@ -13,6 +13,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -45,6 +46,12 @@ public class SecurityConfiguration {
     }
 
     @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring()
+                .requestMatchers("/images/**", "/css/**", "/js/**", "/webjars/**");
+    }
+
+    @Bean
     public DaoAuthenticationProvider authProvider(
             PasswordEncoder passwordEncoder,
             UserDetailsService userDetailsService) {
@@ -71,8 +78,8 @@ public class SecurityConfiguration {
                                 DispatcherType.INCLUDE)
                         .permitAll()
 
-                        .requestMatchers("/", "/login", "/register", "/css/**", "/product/**",
-                                "/js/**", "/client/**", "/images/**")
+                        .requestMatchers("/", "/login", "/register",  "/product/**",
+                                "/client/**")
                         .permitAll()
 
                         .requestMatchers("/admin/**").hasRole("ADMIN")

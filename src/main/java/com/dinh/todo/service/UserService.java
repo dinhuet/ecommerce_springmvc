@@ -1,9 +1,14 @@
 package com.dinh.todo.service;
 
+import com.dinh.todo.models.Cart;
+import com.dinh.todo.models.CartDetail;
 import com.dinh.todo.models.User;
 import com.dinh.todo.models.dto.RegisterDTO;
 import com.dinh.todo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,5 +48,18 @@ public class UserService {
 
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    public User getCurrentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        String email = userDetails.getUsername();
+
+        return getUserByEmail(email);
+    }
+
+    public Cart getCart() {
+        User user = getCurrentUser();
+        return user.getCart();
     }
 }

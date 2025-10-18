@@ -1,5 +1,7 @@
 package com.dinh.todo.controller.client;
 
+import com.dinh.todo.models.Cart;
+import com.dinh.todo.models.CartDetail;
 import com.dinh.todo.models.Product;
 import com.dinh.todo.models.User;
 import com.dinh.todo.models.dto.RegisterDTO;
@@ -14,7 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,15 +27,13 @@ public class HomePageController {
 
     private final ProductService productService;
     private final UserService userService;
-    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleService roleService;
 
 
-    public HomePageController(ProductService productService, UserService userService, RoleRepository roleRepository, PasswordEncoder passwordEncoder, RoleService roleService) {
+    public HomePageController(ProductService productService, UserService userService, PasswordEncoder passwordEncoder, RoleService roleService) {
         this.productService = productService;
         this.userService = userService;
-        this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleService = roleService;
     }
@@ -83,5 +82,12 @@ public class HomePageController {
     @GetMapping("/access_denied")
     public String getAccessDeniedPage(Model model) {
         return  "client/auth/deny";
+    }
+
+    @GetMapping("/user/cart")
+    public String getCartPage(Model model) {
+        Cart cart = userService.getCart();
+        model.addAttribute("cart", cart);
+        return "/client/cart/show";
     }
 }

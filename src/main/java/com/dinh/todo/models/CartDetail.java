@@ -4,27 +4,27 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
-import java.util.List;
-
 import static lombok.AccessLevel.PRIVATE;
 
 @Entity
-@Table(name = "orders")
+@Table(name = "cart_details")
 @Data
 @FieldDefaults(level = PRIVATE)
-public class Order {
+public class CartDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
 
-    private double totalPrice;
+    long quantity;
 
-    @OneToMany(mappedBy = "order")
-    List<OrderDetail>  orderDetails;
+    double price;
 
-    // userid
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "cart_id")
+    Cart cart;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 
 }
