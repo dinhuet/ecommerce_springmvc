@@ -2,6 +2,7 @@ package com.dinh.todo.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 import java.util.List;
@@ -24,4 +25,12 @@ public class Role {
     @OneToMany(mappedBy = "role")
     private List<User> users;
 
+    @Override
+    public String toString() {
+        return "Role{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

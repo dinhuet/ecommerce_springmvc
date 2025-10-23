@@ -2,7 +2,10 @@ package com.dinh.todo.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 import java.util.List;
@@ -13,6 +16,8 @@ import static lombok.AccessLevel.PRIVATE;
 @Table(name = "users")
 @Data
 @FieldDefaults(level = PRIVATE)
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -48,4 +53,20 @@ public class User {
 
     @OneToOne(mappedBy = "user")
     Cart cart;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", role=" + role +
+                ", orders=" + orders +
+                ", cart=" + cart +
+                '}';
+    }
 }

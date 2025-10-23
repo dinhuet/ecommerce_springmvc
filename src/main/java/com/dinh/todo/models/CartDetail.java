@@ -27,4 +27,13 @@ public class CartDetail {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    @Override
+    public String toString() {
+        return "CartDetail{" +
+                "id=" + id +
+                ", quantity=" + quantity +
+                ", price=" + price +
+                ", product=" + product +
+                '}';
+    }
 }

@@ -3,6 +3,7 @@ package com.dinh.todo.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import lombok.Data;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.PackagePrivate;
 
@@ -41,5 +42,14 @@ public class Cart {
 
     public double getTotal() {
         return getSubTotal() + getShippingFee();
+    }
+
+    @Override
+    public String toString() {
+        return "Cart{" +
+                "id=" + id +
+                ", sum=" + sum +
+                ", cartDetails=" + cartDetails +
+                '}';
     }
 }

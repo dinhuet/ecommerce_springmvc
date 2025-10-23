@@ -1,7 +1,11 @@
 package com.dinh.todo.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 import java.util.List;
@@ -12,12 +16,14 @@ import static lombok.AccessLevel.PRIVATE;
 @Table(name = "orders")
 @Data
 @FieldDefaults(level = PRIVATE)
+@Builder
+@AllArgsConstructor
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
 
-    private double totalPrice;
+    double totalPrice;
 
     @OneToMany(mappedBy = "order")
     List<OrderDetail>  orderDetails;
@@ -25,6 +31,36 @@ public class Order {
     // userid
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    User user;
 
+    @NotEmpty
+    @Column(name = "receiver_name")
+    String receiverName;
+
+    @NotEmpty
+    @Column(name = "receiver_address")
+    String receiverAddress;
+
+    @NotEmpty
+    @Column(name = "receiver_phone")
+    String receiverPhone;
+
+    private String status;
+
+    public Order() {
+
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", totalPrice=" + totalPrice +
+                ", orderDetails=" + orderDetails +
+                ", receiverName='" + receiverName + '\'' +
+                ", receiverAddress='" + receiverAddress + '\'' +
+                ", receiverPhone='" + receiverPhone + '\'' +
+                ", status='" + status + '\'' +
+                '}';
+    }
 }

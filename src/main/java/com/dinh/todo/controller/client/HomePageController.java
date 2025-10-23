@@ -90,4 +90,11 @@ public class HomePageController {
         model.addAttribute("cart", cart);
         return "/client/cart/show";
     }
+
+    @GetMapping("/user/checkout")
+    public String getCheckoutPage(Model model) {
+        Cart cart = userService.getCart();
+        model.addAttribute("cart", cart);
+        return "client/checkout/show";
+    }
 }

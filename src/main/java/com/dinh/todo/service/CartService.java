@@ -6,6 +6,7 @@ import com.dinh.todo.models.Product;
 import com.dinh.todo.models.User;
 import com.dinh.todo.repository.CartDetailRepository;
 import com.dinh.todo.repository.CartRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -46,7 +47,7 @@ public class CartService {
         cartDetailRepository.save(cartDetail);
     }
 
-    public int handleAddProductToCart(Long productId) {
+    public CartDetail handleAddProductToCart(Long productId, HttpSession session) {
         User user = userService.getCurrentUser();
         Cart cart = user.getCart();
 
@@ -67,6 +68,10 @@ public class CartService {
         if (existingDetail.isPresent()) {
             existingDetail.get().setQuantity(existingDetail.get().getQuantity() + 1);
             cartDetailRepository.save(existingDetail.get());
+
+            save(cart);
+            session.setAttribute("cart_sum", cart.getSum());
+            return existingDetail.orElse(null);
         } else {
             CartDetail cartDetail = new CartDetail();
             cartDetail.setProduct(product);
@@ -77,10 +82,11 @@ public class CartService {
             cart.setSum(cart.getSum() + 1);
 
             cartDetailRepository.save(cartDetail);
-        }
 
-        save(cart);
-        return cart.getSum();
+            save(cart);
+            session.setAttribute("cart_sum", cart.getSum());
+            return cartDetail;
+        }
     }
 
     public int deleteCartDetailById(Long id) {
